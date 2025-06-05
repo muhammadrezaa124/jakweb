@@ -1,0 +1,3937 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Informasi Keanggotaan Jakmania</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    /> <style>
+      :root {
+        --orange: #ff6600;
+        --dark: #1a1a1a;
+        --light: #f8f8f8;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--light);
+        color: #333;
+        overflow-x: hidden;
+      }
+
+      /* Login Modal */
+      .login-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        backdrop-filter: blur(5px);
+      }
+
+      .login-form {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        color: white;
+        box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
+        border: 1px solid var(--orange);
+        animation: fadeIn 0.5s ease;
+      }
+
+      .login-form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--orange);
+      }
+
+      .login-form label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .login-form button {
+        width: 100%;
+        padding: 12px;
+        background: var(--orange);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .login-form button:hover {
+        background: #e65c00;
+        transform: translateY(-2px);
+      }
+
+      .close-login {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff3333;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        z-index: 3000;
+        display: none;
+        animation: slideIn 0.3s ease;
+      }
+
+      /* Form Pendaftaran */
+      .form-section {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        max-width: 800px;
+        margin: 30px auto;
+      }
+
+      .form-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: var(--orange);
+        font-size: 2rem;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: "Poppins", sans-serif;
+        font-size: 16px;
+        transition: border 0.3s ease;
+      }
+
+      .form-control:focus {
+        border-color: var(--orange);
+        outline: none;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 20px;
+      }
+
+      .radio-option {
+        display: flex;
+        align-items: center;
+      }
+
+      .radio-option input {
+        margin-right: 8px;
+      }
+
+      .btn {
+        background: var(--orange);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .btn:hover {
+        background: #e65c00;
+        transform: translateY(-2px);
+      }
+
+      .photo-preview {
+        width: 150px;
+        height: 150px;
+        border-radius: 5px;
+        object-fit: cover;
+        border: 1px dashed #ccc;
+        display: none;
+        margin-top: 10px;
+      }
+
+      .file-input-label {
+        display: inline-block;
+        padding: 10px 15px;
+        background: #f0f0f0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .file-input-label:hover {
+        background: #e0e0e0;
+      }
+
+      /* Table Section */
+      .table-section {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+        max-width: 1200px;
+        margin: 30px auto;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      .data-table th,
+      .data-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+      }
+
+      .data-table th {
+        background-color: var(--orange);
+        color: white;
+      }
+
+      .data-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .data-table tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      .empty-message {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+      }
+
+      /* Header & Navigation */
+      .topbar {
+        background: #000;
+        color: #fff;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1000;
+      }
+
+      nav {
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+
+      nav .left-nav {
+        display: flex;
+        align-items: center;
+      }
+
+      nav img {
+        height: 50px;
+        max-width: 100%;
+        transition: transform 0.3s ease;
+      }
+
+      nav img:hover {
+        transform: scale(1.05);
+      }
+
+      nav .left-nav a,
+      nav ul li a {
+        margin-left: 20px;
+        text-decoration: none;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        position: relative;
+        transition: color 0.3s ease;
+      }
+
+      nav a:hover {
+        color: var(--orange);
+      }
+
+      nav ul li a.active {
+        color: var(--orange);
+      }
+
+      nav ul li a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background-color: var(--orange);
+        transition: width 0.3s ease;
+      }
+
+      nav ul li a:hover::after,
+      nav ul li a.active::after {
+        width: 100%;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav ul li {
+        margin-left: 20px;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("koreo macan.jpg") center/cover no-repeat;
+        height: 90vh;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        transform: translateY(30px);
+        opacity: 0;
+        max-width: 800px;
+        padding: 0 20px;
+        animation: fadeInUp 1s ease forwards 0.5s;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      }
+
+      .hero p {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        max-width: 800px;
+        padding: 0 20px;
+      }
+
+      .hero a {
+        background: var(--orange);
+        padding: 12px 30px;
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+        display: inline-block;
+        transform: scale(1);
+      }
+
+      .hero a:hover {
+        background: #e65c00;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(230, 92, 0, 0.4);
+      }
+
+      .orange-text {
+        color: var(--orange);
+        font-weight: bold;
+      }
+
+      /* Main Content Sections */
+      .section {
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .section-header h2 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      /* Timeline Section */
+      .timeline {
+        position: relative;
+        padding-left: 110px;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 84px;
+        width: 4px;
+        background: var(--orange);
+      }
+
+      .timeline-item {
+        position: relative;
+        margin-bottom: 50px;
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.5s ease;
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+
+      .timeline-item.animate {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .timeline-item:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -40px;
+        top: 30px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--orange);
+        border: 5px solid white;
+        box-shadow: 0 0 0 2px var(--orange);
+        transition: transform 0.3s ease;
+      }
+
+      .timeline-item:hover::before {
+        transform: scale(1.2);
+      }
+
+      .timeline-year {
+        position: absolute;
+        left: -120px;
+        top: 20px;
+        background: var(--orange);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+      }
+
+      .timeline-item:hover .timeline-year {
+        transform: scale(1.1);
+      }
+
+      .timeline-content h3 {
+        margin-top: 0;
+        color: var(--orange);
+        font-size: 1.5rem;
+      }
+
+      /*Layanan*/
+      /* Main Content Sections */
+      .section {
+        padding: 80px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+      }
+
+      .section-title h2 {
+        font-size: 2.5rem;
+        display: inline-block;
+      }
+
+      .section-title h2::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--orange);
+      }
+
+      /* Features Section */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+        transform: translateY(50px);
+        opacity: 0;
+        transition: all 0.5s ease;
+      }
+
+      .features-grid.animate {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .feature-card i {
+        font-size: 3rem;
+        color: var(--orange);
+        margin-bottom: 20px;
+      }
+
+      .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      /* Gallery Section */
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 50px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        height: 250px;
+        transform: translateY(50px);
+        opacity: 0;
+        transition: all 0.5s ease;
+      }
+
+      .gallery-item.animate {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.1);
+      }
+
+      .gallery-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+      }
+
+      .gallery-item:hover .gallery-caption {
+        transform: translateY(0);
+      }
+
+      /* Achievement Section */
+      .achievements {
+        background: var(--dark);
+        color: white;
+        padding: 80px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .achievements::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("https://www.transparenttextures.com/patterns/dark-stripes.png");
+        opacity: 0.1;
+        z-index: 0;
+      }
+
+      .achievements h2 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .achievements h2 span {
+        color: var(--orange);
+      }
+
+      .trophy-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        max-width: 1000px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .trophy {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 30px 20px;
+        width: 200px;
+        transition: all 0.5s ease;
+        transform: translateY(30px);
+        opacity: 0;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .trophy.animate {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .trophy:hover {
+        transform: translateY(-10px) !important;
+        background: rgba(255, 102, 0, 0.2);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .trophy i {
+        font-size: 3rem;
+        color: var(--orange);
+        margin-bottom: 15px;
+        transition: transform 0.3s ease;
+      }
+
+      .trophy:hover i {
+        transform: scale(1.2);
+      }
+
+      .trophy h3 {
+        margin: 10px 0;
+      }
+
+      /* Fun Facts */
+      .fun-facts {
+        max-width: 1000px;
+        margin: 80px auto;
+        padding: 0 20px;
+      }
+
+      .fun-facts h2 {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+      }
+
+      .facts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .fact-card {
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-top: 5px solid var(--orange);
+        transition: all 0.3s ease;
+        transform: scale(0.95);
+        opacity: 0;
+      }
+
+      .fact-card.animate {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      .fact-card:hover {
+        transform: translateY(-10px) scale(1) !important;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .fact-card h3 {
+        color: var(--orange);
+        margin-top: 0;
+      }
+
+      /* Legend Players Section */
+      .legend-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+      }
+
+      .legend-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.5s ease;
+        transform: translateY(50px);
+        opacity: 0;
+      }
+
+      .legend-card.animate {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      .legend-card:hover {
+        transform: translateY(-10px) !important;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .legend-image {
+        position: relative;
+        height: 300px;
+        overflow: hidden;
+      }
+
+      .legend-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .legend-card:hover .legend-image img {
+        transform: scale(1.1);
+      }
+
+      .legend-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        color: white;
+        padding: 20px;
+      }
+
+      .legend-overlay h3 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      .legend-info {
+        padding: 20px;
+      }
+
+      /* Manager History Section */
+      .manager-timeline {
+        position: relative;
+        padding-left: 100px;
+      }
+
+      .manager-timeline::before {
+        content: "";
+        position: absolute;
+        left: 50px;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--orange);
+      }
+
+      .manager-item {
+        position: relative;
+        margin-bottom: 40px;
+        background: white;
+        border-radius: 10px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.5s ease;
+        transform: translateX(-50px);
+        opacity: 0;
+      }
+
+      .manager-item.animate {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .manager-item:hover {
+        transform: translateX(0) translateY(-5px) !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .manager-year {
+        position: absolute;
+        left: -80px;
+        top: 20px;
+        background: var(--orange);
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .manager-item:hover .manager-year {
+        transform: scale(1.1);
+      }
+
+      /* Jakmania Section */
+      .jakmania-section {
+        background: var(--dark);
+        color: white;
+        padding: 80px 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .jakmania-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("https://www.transparenttextures.com/patterns/dark-stripes.png");
+        opacity: 0.1;
+        z-index: 0;
+      }
+
+      .jakmania-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .jakmania-text {
+        transform: translateX(-50px);
+        opacity: 0;
+        transition: all 0.8s ease;
+      }
+
+      .jakmania-text.animate {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .jakmania-text h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .jakmania-text ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .jakmania-text li {
+        margin-bottom: 15px;
+        position: relative;
+        padding-left: 30px;
+        transition: all 0.3s ease;
+      }
+
+      .jakmania-text li:hover {
+        transform: translateX(10px);
+      }
+
+      .jakmania-text i {
+        color: var(--orange);
+        position: absolute;
+        left: 0;
+        top: 5px;
+      }
+
+      .jakmania-image {
+        transform: translateX(50px);
+        opacity: 0;
+        transition: all 0.8s ease;
+      }
+
+      .jakmania-image.animate {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .jakmania-image img {
+        width: 500px;
+        height: 400px;       
+        object-fit: cover; 
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: transform 0.5s ease;
+      }
+
+      .jakmania-image:hover img {
+        transform: scale(1.05);
+      }
+
+      /* Footer */
+      .footer {
+        background-color: #000;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        position: relative;
+      }
+
+      .footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("https://www.transparenttextures.com/patterns/dark-stripes.png");
+        opacity: 0.2;
+        z-index: 0;
+      }
+
+      .footer p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      /* Floating Animation */
+      .floating {
+        animation: floating 3s ease-in-out infinite;
+      }
+
+      @keyframes floating {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .timeline {
+          padding-left: 20px;
+        }
+
+        .timeline::before {
+          left: 10px;
+        }
+
+        .timeline-item::before {
+          left: -30px;
+        }
+
+        .timeline-year {
+          position: static;
+          display: inline-block;
+          margin-bottom: 10px;
+        }
+
+        .manager-timeline {
+          padding-left: 20px;
+        }
+
+        .manager-year {
+          position: static;
+          margin-bottom: 15px;
+        }
+
+        .manager-timeline::before {
+          display: none;
+        }
+
+        .jakmania-content {
+          grid-template-columns: 1fr;
+        }
+
+        .jakmania-image {
+          order: -1;
+        }
+
+        nav ul {
+          flex-direction: column;
+          position: fixed;
+          top: 80px;
+          left: -100%;
+          width: 100%;
+          background: white;
+          transition: left 0.3s ease;
+        }
+
+        nav ul.show {
+          left: 0;
+        }
+
+        nav ul li {
+          margin: 10px 0;
+          padding: 0 20px;
+        }
+      }
+      /* Admin Dashboard Styles */
+      .main-content {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+        flex: 1;
+        width: 100%;
+      }
+
+      .page-title {
+        color: var(--orange);
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      /* Table Styles */
+      .table-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: var(--orange);
+        color: white;
+        font-weight: 600;
+      }
+
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+
+      .status-active {
+        color: #2ecc71;
+        font-weight: 600;
+      }
+
+      .status-inactive {
+        color: #e74c3c;
+        font-weight: 600;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 5px;
+      }
+
+      .action-btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .status-btn {
+        background-color: #2ecc71;
+        color: white;
+      }
+
+      .status-btn.inactive {
+        background-color: #e74c3c;
+      }
+
+      .edit-btn {
+        background-color: #3498db;
+        color: white;
+      }
+
+      .delete-btn {
+        background-color: #e74c3c;
+        color: white;
+      }
+
+      .action-btn:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
+      }
+
+      /* Notification */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff3333;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 5px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        z-index: 3000;
+        white-space: pre-line;
+        line-height: 1;
+        display: none;
+        animation: slideIn 0.3s ease;
+      }
+
+      .notification.success {
+        background: #2ecc71;
+      }
+
+      /* Search and Filter */
+      .tools-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .search-box {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 260px;
+      }
+
+      .filter-group {
+        display: flex;
+        align-items: center;
+      }
+
+      .filter-group label {
+        margin-right: 10px;
+      }
+
+      .filter-select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      /* Responsive Table */
+      @media (max-width: 768px) {
+        .tools-container {
+          flex-direction: column;
+        }
+
+        .search-box {
+          width: 100%;
+        }
+
+        th,
+        td {
+          padding: 8px 10px;
+          font-size: 14px;
+        }
+      }
+
+      /* Kartu Anggota Styles */
+      .kartu-anggota {
+        width: 420px;
+        height: 300px;
+        border-radius: 20px;
+        background: linear-gradient(rgba(28, 40, 200, 0.3), rgba(0, 0, 0, 0.6)),
+          url("Wall Jak.jpg") center/cover no-repeat;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 12px;
+        position: relative;
+        margin: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .kartu-logo {
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        width: 60px;
+      }
+
+      .kartu-judul {
+        text-align: center;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
+      .kartu-judul h2 {
+        margin: 5px 0;
+        color: white;
+      }
+
+      .kartu-judul h3 {
+        margin: 5px 0;
+        color: #fbfbfb;
+      }
+
+      .kartu-foto {
+        position: absolute;
+        top: 200px;
+        right: 50px;
+        border: 1px solid white;
+        width: 60;
+        height: 80px;
+/*        background-color: white;*/
+      }
+
+      .kartu-data {
+        margin-top: 50px;
+        margin-left: 12px;
+        font-size: 10px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+
+      .kartu-data b {
+        display: inline-block;
+        width: 120px;
+      }
+
+      .kartu-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      /* Login Modal */
+      .login-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        backdrop-filter: blur(5px);
+      }
+
+      .login-form {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 30px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        color: white;
+        box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
+        border: 1px solid var(--orange);
+        animation: fadeIn 0.5s ease;
+      }
+
+      .login-form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--orange);
+      }
+
+      .login-form label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .login-form input {
+        width: 94%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .login-form button {
+        width: 20%;
+        padding: 12px;
+        background: var(--orange);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .login-footer {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .login-footer a {
+        color: var(--orange);
+        text-decoration: none;
+      }
+
+      .login-footer a:hover {
+        text-decoration: underline;
+      }
+
+      .login-form button:hover {
+        background: #e65c00;
+        transform: translateY(-2px);
+      }
+
+      .close-login {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      /* Registration Form */
+      .form-section {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: var(--orange);
+        font-size: 2rem;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: "Poppins", sans-serif;
+        font-size: 16px;
+        transition: border 0.3s ease;
+      }
+
+      .form-control:focus {
+        border-color: var(--orange);
+        outline: none;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 20px;
+      }
+
+      .radio-option {
+        display: flex;
+        align-items: center;
+      }
+
+      .radio-option input {
+        margin-right: 8px;
+      }
+
+      .btn {
+        background: var(--orange);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .btn:hover {
+        background: #e65c00;
+        transform: translateY(-2px);
+      }
+
+      .photo-preview {
+        width: 150px;
+        height: 150px;
+        border-radius: 5px;
+        object-fit: cover;
+        border: 1px dashed #ccc;
+        display: none;
+        margin-top: 10px;
+      }
+
+      .file-input-label {
+        display: inline-block;
+        padding: 10px 15px;
+        background: #f0f0f0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .file-input-label:hover {
+        background: #e0e0e0;
+      }
+
+      /* Member Dashboard */
+      .member-dashboard {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .member-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        width: 300px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .member-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .member-card h3 {
+        color: var(--orange);
+        margin-top: 0;
+      }
+
+      /* Merchandise Section */
+      .merchandise-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .merch-item {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .merch-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .merch-image {
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .merch-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .merch-item:hover .merch-image img {
+        transform: scale(1.1);
+      }
+
+      .merch-info {
+        padding: 15px;
+      }
+
+      .merch-info h3 {
+        margin-top: 0;
+        color: var(--orange);
+      }
+
+      .merch-price {
+        font-weight: bold;
+        color: var(--dark);
+        margin: 10px 0;
+      }
+
+      .merch-btn {
+        display: inline-block;
+        background: var(--orange);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .merch-btn:hover {
+        background: #e65c00;
+        transform: translateY(-2px);
+      }
+
+      /* Page Transitions */
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      /* Modal Logout */
+      .modal {
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background: #fff;
+        background: transparent;
+        padding: 16px;
+        border-radius: 600px;
+        text-align: center;
+        max-width: 280px;
+        width: 90%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-content h3 {
+        margin-bottom: 20px;
+        color: var(--light);
+      }
+
+      .modal-buttons {
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+      }
+
+      .modal-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .modal-btn.confirm {
+        background-color: var(--orange);
+        color: white;
+      }
+
+      .modal-btn.cancel {
+        background-color: #ccc;
+      }
+
+      .modal-btn:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+
+      /*Modal*/
+      .edit-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .edit-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .edit-close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover {
+        color: black;
+      }
+
+      /* Product Categories */
+.categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.category-btn {
+  padding: 10px 20px;
+  background: white;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover,
+.category-btn.active {
+  background: var(--orange);
+  color: white;
+}
+
+/* Products Grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.product-card.animate {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+  height: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.1);
+}
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--orange);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.product-info {
+  padding: 20px;
+}
+
+.product-info h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.price {
+  font-weight: bold;
+  color: var(--orange);
+  font-size: 1.2rem;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 0.9rem;
+  margin-left: 5px;
+}
+
+.add-to-cart {
+  background: var(--orange);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background: #e65c00;
+}
+
+.mercen {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80")
+            center/cover no-repeat;
+        height: 60vh;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mercen-content {
+        position: relative;
+        z-index: 2;
+        transform: translateY(30px);
+        opacity: 0;
+        max-width: 800px;
+        padding: 0 20px;
+        animation: fadeInUp 1s ease forwards 0.5s;
+      }
+
+      .mercen h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+      }
+
+      .mercen p {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        max-width: 800px;
+        padding: 0 20px;
+      }
+
+      .mercen a {
+        background: var(--orange);
+        padding: 12px 30px;
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+        display: inline-block;
+        transform: scale(1);
+      }
+
+      .mercen a:hover {
+        background: #e65c00;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(230, 92, 0, 0.4);
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <!-- Notification -->
+    <div id="notification" class="notification" style="display: none"></div>
+
+    <header class="topbar">
+      <div class="latest">Sistem Informasi Keanggotaan Jakmania</div>
+    </header>
+
+    <nav>
+      <div class="left-nav">
+        <img src="JAKMANIA LOGO.jpg" alt="Logo Jakmania" class="floating" />
+        <a href="#" id="homeLink">WELCOME TO JAKWEB</a>
+      </div>
+      <ul id="menuList"></ul>
+    </nav>
+
+    <!-- Public Pages -->
+    <div id="publicPages">
+      <!-- Home Page -->
+      <div id="homePage" class="page active">
+        <div class="hero">
+          <div class="hero-content">
+            <h1>
+              Selamat Datang di <span class="orange-text">JAKWEB</span>
+            </h1>
+            <p>
+              Bergabunglah bersama ribuan Jakmania lainnya dan dukung Macan
+              Kemayoran!
+            </p>
+            <a href="#" onclick="showPage('registration')">DAFTAR SEKARANG</a>
+          </div>
+        </div>
+
+        <!-- Features Section -->
+        <section id="layanan" class="section">
+          <div class="section-title">
+            <h2>Layanan <span class="orange-text">Kami</span></h2>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <i class="fas fa-user-plus"></i>
+              <h3>Pendaftaran Anggota</h3>
+              <p>
+                Daftarkan diri Anda secara online untuk menjadi anggota resmi
+                Jakmania dan dapatkan berbagai keuntungan.
+              </p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-id-card"></i>
+              <h3>Kartu Anggota Digital</h3>
+              <p>
+                Cetak kartu anggota digital Anda yang bisa digunakan untuk
+                mengakses berbagai fasilitas.
+              </p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-ticket-alt"></i>
+              <h3>Pemesanan Tiket</h3>
+              <p>
+                Dapatkan akses prioritas untuk pembelian tiket pertandingan
+                Persija Jakarta.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sejarah Section -->
+        <section class="section" id="sejarah">
+          <div class="section-header">
+            <h2>Sejarah <span class="orange-text">Persija</span></h2>
+            <p>
+              Perjalanan panjang Macan Kemayoran dari masa kolonial hingga
+              menjadi salah satu klub paling legendaris di Indonesia
+            </p>
+          </div>
+
+          <div class="timeline">
+            <!-- Era 1 -->
+            <div class="timeline-item">
+              <div class="timeline-year">1928-1940</div>
+              <div class="timeline-content">
+                <h3>Era Pendirian & Perlawanan</h3>
+                <p>
+                  Persija lahir dengan nama
+                  <span class="orange-text"
+                    >Voetbalbond Indonesische Jacatra (VIJ)</span
+                  >
+                  pada 28 November 1928, bertepatan dengan momentum Sumpah
+                  Pemuda. Klub ini menjadi simbol perlawanan terhadap
+                  kolonialisme Belanda.
+                </p>
+                <p>
+                  <strong>Fakta Menarik:</strong> Pada 1933, VIJ mengalahkan
+                  klub Belanda HBS 2-1 dalam pertandingan yang dijuluki
+                  "kemenangan politik".
+                </p>
+              </div>
+            </div>
+
+            <!-- Era 2 -->
+            <div class="timeline-item">
+              <div class="timeline-year">1940-1950</div>
+              <div class="timeline-content">
+                <h3>Masa Peralihan</h3>
+                <p>
+                  Masa pendudukan Jepang menghentikan aktivitas sepakbola. Pasca
+                  kemerdekaan, VIJ resmi berganti nama menjadi
+                  <span class="orange-text">Persija Jakarta</span> dan menjadi
+                  salah satu pendiri PSSI.
+                </p>
+              </div>
+            </div>
+
+            <!-- Era 3 -->
+            <div class="timeline-item">
+              <div class="timeline-year">1950-1994</div>
+              <div class="timeline-content">
+                <h3>Kejayaan Perserikatan</h3>
+                <p>
+                  Sofyan Hadi adalah mantan pemain dan pelatih Persija Jakarta yang aktif pada era 1970–1990-an. Ia dikenal sebagai sosok yang berdedikasi tinggi, baik saat bermain maupun saat melatih, dan turut berperan penting dalam perkembangan Persija serta pembinaan sepak bola di Jakarta.
+
+                </p>
+                <p>
+                  <strong>Momen Penting:</strong> Gelar pertama diraih tahun
+                  1979 di bawah pelatih Sinyo Aliandoe.
+                </p>
+              </div>
+            </div>
+
+            <!-- Era 4 -->
+            <div class="timeline-item">
+              <div class="timeline-year">1994-2001</div>
+              <div class="timeline-content">
+                <h3>Era Liga Modern</h3>
+                <p>
+                  Persija kesulitan beradaptasi dengan format baru Liga
+                  Indonesia, tetapi akhirnya meraih gelar perdana pada tahun
+                  2001 setelah mengalahkan PSM Makassar lewat adu penalti.
+                </p>
+              </div>
+            </div>
+
+          <!-- Era 5 -->
+          <div class="timeline-item">
+            <div class="timeline-year">2002-2018</div>
+            <div class="timeline-content">
+              <h3>Puasa Gelar & Kebangkitan</h3>
+              <p>
+                Setelah 17 tahun menunggu, Persija akhirnya juara lagi di tahun
+                2018 di bawah pelatih Stefano "Teco" Cugurra dengan strategi
+                pressing yang efektif.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- Gallery Section -->
+    <div class="gallery">
+      <div class="gallery-item">
+        <img
+          src="data:image/jpeg;base64,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"
+          alt="Persija Lama"
+        />
+        <div class="gallery-caption">Tim Persija era 1980-an</div>
+      </div>
+      <div class="gallery-item">
+        <img src="macan.jpg" alt="Jakmania" />
+        <div class="gallery-caption">The Jakmania - Suporter Fanatik</div>
+      </div>
+      <div class="gallery-item">
+        <img
+          src="https://cdn0-production-images-kly.akamaized.net/BqK2moDIMbBw4RwIeKNb_gwkfvE=/1200x900/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/2518943/original/004446500_1544360700-Persija-Juara-Liga1.jpg"
+          alt="Juara 2018"
+        />
+        <div class="gallery-caption">Momen Juara Liga 1 2018</div>
+      </div>
+    </div>
+
+    <!-- Achievements Section -->
+    <section class="achievements" id="prestasi">
+      <h2>Prestasi <span>Persija</span></h2>
+      <div class="trophy-container">
+        <div class="trophy">
+          <i class="fas fa-trophy"></i>
+          <h3>Liga Indonesia</h3>
+          <p>2 Gelar (2001, 2018)</p>
+        </div>
+        <div class="trophy">
+          <i class="fas fa-medal"></i>
+          <h3>Perserikatan</h3>
+          <p>4 Gelar (1979-1991)</p>
+        </div>
+        <div class="trophy">
+          <i class="fas fa-shield-alt"></i>
+          <h3>Community Shield</h3>
+          <p>1 Gelar (2019)</p>
+        </div>
+      </div>
+    </section>
+
+      <!-- Achievements Section -->
+      <section class="achievements" id="prestasi">
+        <h2>Prestasi <span>Persija</span></h2>
+        <div class="trophy-container">
+          <div class="trophy">
+            <i class="fas fa-trophy"></i>
+            <h3>Liga Indonesia</h3>
+            <p>2 Gelar (2001, 2018)</p>
+          </div>
+          <div class="trophy">
+            <i class="fas fa-medal"></i>
+            <h3>Perserikatan</h3>
+            <p>4 Gelar (1979-1991)</p>
+          </div>
+          <div class="trophy">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Community Shield</h3>
+            <p>1 Gelar (2019)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fun Facts Section -->
+      <section class="fun-facts">
+        <h2>Fakta <span class="orange-text">Menarik</span></h2>
+        <div class="facts-grid">
+          <div class="fact-card">
+            <h3>Asal Julukan Macan Kemayoran</h3>
+            <p>
+              Berasal dari wilayah Kemayoran yang menjadi basis awal Persija.
+              Macan dipilih sebagai simbol kekuatan dan keberanian.
+            </p>
+          </div>
+          <div class="fact-card">
+            <h3>Derby Terpanas</h3>
+            <p>
+              Lawan Persib Bandung dijuluki "Derby Indonesia" karena panasnya
+              rivalitas sejak era 1980-an.
+            </p>
+          </div>
+          <div class="fact-card">
+            <h3>Stadion Kandang</h3>
+            <p>
+              Persija pernah bermarkas di Lebak Bulus (1974-2007), kemudian pindah
+              ke GBK, dan akan memiliki stadion baru di Rorotan.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Legend Players Section -->
+      <section class="section" id="legenda">
+        <div class="section-header">
+          <h2>Legenda <span class="orange-text">Persija</span></h2>
+          <p>Para pemain yang mengukir sejarah klub</p>
+        </div>
+
+        <div class="legend-grid">
+          <div class="legend-card">
+            <div class="legend-image">
+              <img
+                src="sofyan hadi.jpg"
+                alt="Sofyan Hadi"
+              />
+              <div class="legend-overlay">
+                <h3>Sofyan Hadi</h3>
+                <p>Era 1980-an</p>
+              </div>
+            </div>
+            <div class="legend-info">
+              <p>
+                Kapten legendaris yang membawa Persija juara Perserikatan 1979.
+                Dijuluki "Si Kaki Emas" karena tendangan bebasnya yang mematikan.
+              </p>
+            </div>
+          </div>
+  
+          <div class="legend-card">
+            <div class="legend-image">
+              <img
+                src="https://pict.sindonews.net/dyn/850/pena/news/2021/03/31/52/382666/bambang-pamungkas-legenda-sepanjang-masa-persija-dan-timnas-indonesia-cid.jpg"
+                alt="Bambang Pamungkas"
+              />
+              <div class="legend-overlay">
+                <h3>Bambang Pamungkas</h3>
+                <p>Era 2000-an</p>
+              </div>
+            </div>
+            <div class="legend-info">
+              <p>
+                Pencetak gol terbanyak sepanjang masa Persija dengan 126 gol.
+                Juara Liga Indonesia 2001 dan ikon klub selama 15 tahun.
+              </p>
+            </div>
+          </div>
+  
+          <div class="legend-card">
+            <div class="legend-image">
+              <img
+                src="https://cdn-1.timesmedia.co.id/images/2024/02/05/Ismed-Sofyan.jpg"
+   alt="Ismed Sofyan" />
+              <div class="legend-overlay">
+                <h3>Ismed Sofyan</h3>
+                <p>Era 2000-2010</p>
+              </div>
+            </div>
+            <div class="legend-info">
+              <p>
+                Bek sayap yang setia membela Persija selama 12 tahun. Dikenal
+                dengan julukan "The Wall" karena pertahanannya yang solid.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Manager History Section -->
+      <section class="section">
+        <div class="section-header">
+          <h2>Pelatih <span class="orange-text">Bersejarah</span></h2>
+          <p>Para arsitek di balik kesuksesan Persija</p>
+        </div>
+
+        <div class="manager-timeline">
+          <div class="manager-item">
+            <div class="manager-year">1979</div>
+            <div class="manager-content">
+              <h3>Sinyo Aliandoe</h3>
+              <p>
+                Pelatih pertama yang membawa Persija juara Perserikatan.
+                Menerapkan disiplin tinggi dan strategi bertahan yang rapat.
+              </p>
+            </div>
+          </div>
+
+          <div class="manager-item">
+            <div class="manager-year">2001</div>
+            <div class="manager-content">
+              <h3>Ivan Kolev</h3>
+              <p>
+                Pelatih Bulgaria yang sukses membawa Persija juara Liga Indonesia
+                pertama. Dikenal dengan formasi 3-5-2 yang ofensif.
+              </p>
+            </div>
+          </div>
+
+          <div class="manager-item">
+            <div class="manager-year">2018</div>
+            <div class="manager-content">
+              <h3>Stefano Cugurra</h3>
+              <p>
+                Pelatih Brasil yang mengakhiri puasa gelar 17 tahun. Membawa
+                permainan pressing tinggi dan gaya menyerang yang atraktif.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Jakmania Section -->
+      <section class="jakmania-section">
+        <div class="jakmania-content">
+          <div class="jakmania-text">
+            <h2>The <span class="orange-text">Jakmania</span></h2>
+            <p>
+              Komunitas suporter terbesar di Indonesia dengan lebih dari 100.000
+              anggota resmi. Jakmania dikenal dengan:
+            </p>
+            <ul>
+              <li>
+                <i class="fas fa-check"></i> Chants "Jakarta, Jakarta!" yang
+                ikonik
+              </li>
+              <li>
+                <i class="fas fa-check"></i> Tifosi koreografi besar-besaran
+              </li>
+              <li>
+                <i class="fas fa-check"></i> Dukungan tanpa batas home maupun away
+              </li>
+              <li>
+                <i class="fas fa-check"></i> Aksi sosial dan kegiatan komunitas
+              </li>
+            </ul>
+          </div>
+          <div class="jakmania-image">
+            <img
+              src="stadion gbk.jpg"
+              alt="The Jakmania"
+            />
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+      </div>
+
+      <!-- Registration Page -->
+      <div id="registrationPage" class="page">
+        <section class="form-section">
+          <h1 class="form-title">FORM PENDAFTARAN ANGGOTA JAKMANIA</h1>
+
+          <form id="registrationForm">
+            <div class="form-group">
+              <label for="nik">NIK (Nomor Induk Kependudukan)</label>
+              <input
+                type="text"
+                id="nik"
+                class="form-control"
+                required
+                pattern="[0-9]{16}"
+                title="NIK harus 16 digit angka"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="fullName">Nama Lengkap</label>
+              <input type="text" id="fullName" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input
+                    type="radio"
+                    id="male"
+                    name="gender"
+                    value="Laki-laki"
+                    required
+                  />
+                  <label for="male">Laki-laki</label>
+                </div>
+                <div class="radio-option">
+                  <input
+                    type="radio"
+                    id="female"
+                    name="gender"
+                    value="Perempuan"
+                  />
+                  <label for="female">Perempuan</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="birthDate">Tanggal Lahir</label>
+              <input type="date" id="birthDate" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="address">Alamat Lengkap</label>
+              <textarea
+                id="address"
+                class="form-control"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Nomor Telepon</label>
+              <input type="tel" id="phone" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="photo">Upload Foto (3x4)</label>
+              <input
+                type="file"
+                id="photo"
+                accept="image/*"
+                style="display: none"
+                required
+              />
+              <label for="photo" class="file-input-label">
+                <i class="fas fa-camera"></i> Pilih Foto
+              </label>
+              <img id="photoPreview" class="photo-preview" alt="Preview Foto" />
+            </div>
+
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                required
+                minlength="6"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Konfirmasi Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn">DAFTAR SEKARANG</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <!-- Login Modal -->
+      <div id="loginModal" class="login-modal">
+        <div class="login-form">
+          <span class="close-login" onclick="closeLoginModal()">&times;</span>
+          <h2>Login Jakweb</h2>
+          <form id="loginForm">
+            <label for="loginUsername">Username:</label>
+            <input type="text" id="loginUsername" required />
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" required />
+            <button type="submit">Login</button>
+          </form>
+          <div class="login-footer">
+            <p>
+              Belum punya akun?
+              <a
+                href="# "
+                onclick="closeLoginModal()
+                ; showPage('registration')"
+                >Daftar disini</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Pages -->
+    <div id="adminPages" class="page">
+      <!-- Admin Home -->
+      <div id="adminHomePage" class="page active">
+        <div class="hero">
+          <div class="hero-content">
+            <h1>
+              Selamat Datang di <span class="orange-text">Admin Panel</span>
+            </h1>
+            <p>Kelola sistem keanggotaan Jakmania dengan mudah dan efisien.</p>
+          </div>
+        </div>
+
+        <!-- Features Section -->
+        <section id="layanan" class="section">
+          <div class="section-title">
+            <h2>Fitur <span class="orange-text">Admin</span></h2>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <i class="fas fa-users"></i>
+              <h3>Kelola Anggota</h3>
+              <p>Lihat, edit, dan kelola data anggota Jakmania dengan mudah.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-id-card"></i>
+              <h3>Cetak Kartu</h3>
+              <p>
+                Cetak kartu anggota untuk anggota baru atau yang membutuhkan
+                penggantian.
+              </p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-cog"></i>
+              <h3>Pengaturan Sistem</h3>
+              <p>Kelola pengaturan sistem dan konfigurasi aplikasi.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Admin Anggota -->
+      <div id="adminAnggotaPage" class="page">
+        <div class="main-content">
+          <h1 class="page-title">DATA ANGGOTA JAKMANIA</h1>
+
+          <div class="tools-container">
+            <input
+              type="text"
+              id="searchInput"
+              class="search-box"
+              placeholder="Cari anggota..."
+            />
+            <div class="filter-group">
+              <label for="statusFilter">Status:</label>
+              <select id="statusFilter" class="filter-select">
+                <option value="Semua">Semua</option>
+                <option value="Aktif">Aktif</option>
+                <option value="Nonaktif">Nonaktif</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table id="membersTable">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>No. Anggota</th>
+                  <th>Nama</th>
+                  <th>NIK</th>
+                  <th>Jenis Kelamin</th>
+                  <th>Tanggal Lahir</th>
+                  <th>Alamat</th>
+                  <th>Nomor HP</th>
+                  <th>Email</th>
+                  <th>Username</th>
+                  <th>Status</th>
+                  <th width="150px">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="membersTableBody">
+                <!-- Data anggota akan dimuat di sini -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="editModal" class="edit-modal">
+        <div class="edit-content">
+          <span
+            class="editclose"
+            onclick="document.getElementById('editModal').style.display='none'"
+            >&times;</span
+          >
+          <h2>Edit Anggota</h2>
+          <form id="editMemberForm" onsubmit="saveEditMember(event)">
+            <div class="form-group">
+              <label for="editFullName">Nama Lengkap</label>
+              <input
+                type="text"
+                id="editFullName"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input
+                    type="radio"
+                    id="editMale"
+                    name="editGender"
+                    value="Laki-laki"
+                    required
+                  />
+                  <label for="editMale">Laki-laki</label>
+                </div>
+                <div class="radio-option">
+                  <input
+                    type="radio"
+                    id="editFemale"
+                    name="editGender"
+                    value="Perempuan"
+                  />
+                  <label for="editFemale">Perempuan</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="editEmail">Email</label>
+              <input
+                type="email"
+                id="editEmail"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="editPhone">Nomor Telepon</label>
+              <input type="tel" id="editPhone" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="editAddress">Alamat</label>
+              <textarea
+                id="editAddress"
+                class="form-control"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn">Simpan Perubahan</button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="document.getElementById('editModal').style.display='none'"
+              >
+                Batal
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Admin Cetak -->
+      <div id="adminCetakPage" class="page">
+        <div class="main-content">
+          <div class="container">
+            <h2>Cetak Kartu Keanggotaan</h2>
+            <div class="kartu-container" id="kartuContainer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Member Pages -->
+    <div id="memberPages" class="page">
+      <!-- Member Home -->
+      <div id="memberHomePage" class="page active">
+        <div class="hero">
+          <div class="hero-content">
+            <h1>Selamat Datang <span class="orange-text">Jakmania</span></h1>
+            <p>Nikmati berbagai keuntungan sebagai anggota resmi Jakmania.</p>
+          </div>
+        </div>
+
+        <section class="section">
+          <div class="section-title">
+            <h2>Informasi <span class="orange-text">Anggota</span></h2>
+          </div>
+          <div class="member-dashboard">
+            <div class="member-card">
+              <h3>Kartu Anggota</h3>
+              <p>Lihat dan cetak kartu anggota Anda</p>
+              <button class="btn" onclick="showPage('memberCard')">
+                Lihat Kartu
+              </button>
+            </div>
+            <div class="member-card">
+              <h3>Profil Saya</h3>
+              <p>Kelola informasi profil Anda</p>
+              <button class="btn" onclick="showPage('memberProfile')">
+                Lihat Profil
+              </button>
+            </div>
+            <div class="member-card">
+              <h3>Keanggotaan</h3>
+              <p>Status keanggotaan dan masa berlaku</p>
+              <button class="btn" onclick="showPage('memberStatus')">
+                Lihat Status
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Member Merchandise -->
+      <div id="memberMerchandisePage" class="page">
+        <section class="section" style="padding: 0px;max-width: 1300px;">
+          <div class="mercen" margin: 0;
+          padding: 0;>
+            <div class="mercen-content">
+              <h1>
+                Official Merchandise <span class="orange-text">Jakmania</span></h1>
+            <p>
+              Dapatkan merchandise eksklusif untuk mendukung Macan Kemayoran
+            </p>
+          </div>
+<!--    <section class="section">
+      <div class="section-header">
+        <h2>Kategori <span class="orange-text">Produk</span></h2>
+      </div>-->
+      <div class="categories">
+        <button class="category-btn active" data-category="all">Semua</button>
+        <button class="category-btn" data-category="jersey">Jersey</button>
+        <button class="category-btn" data-category="jaket">Jaket</button>
+        <button class="category-btn" data-category="topi">Topi</button>
+        <button class="category-btn" data-category="scarf">Scarf</button>
+        <button class="category-btn" data-category="aksesoris">
+          Aksesoris
+        </button>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section" id="produk">
+      <div class="products-grid">
+        <!-- Product 1 -->
+        <div class="product-card" data-category="jersey">
+          <div class="product-image">
+            <img
+              src="jersey tandang persija 2024.jpg"
+              alt="Jersey Kandang Persija 2024"
+            />
+            <div class="product-badge">BEST SELLER</div>
+          </div>
+          <div class="product-info">
+            <h3>Jersey Kandang Persija 2024</h3>
+            <p>Jersey resmi musim 2024 dengan bahan berkualitas tinggi</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 399.000</span>
+                <span class="original-price">Rp 499.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-category="jersey">
+          <div class="product-image">
+            <img
+              src="jersey thrid 2024.jpg"
+              alt="Jersey Tandang Persija 2024"
+            />
+          </div>
+          <div class="product-info">
+            <h3>Jersey Tandang Persija 2024</h3>
+            <p>Desain eksklusif dengan teknologi keringat cepat</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 399.000</span>
+                <span class="original-price">Rp 499.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-category="jaket">
+          <div class="product-image">
+            <img
+              src="jaket training 2024.jpg"
+              alt="Jaket Training Persija"
+            />
+            <div class="product-badge">NEW</div>
+          </div>
+          <div class="product-info">
+            <h3>Jaket Training Persija</h3>
+            <p>Jaket training resmi dengan bahan waterproof</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 549.000</span>
+                <span class="original-price">Rp 649.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card" data-category="topi">
+          <div class="product-image">
+            <img
+              src="topi persija.jpg"
+              alt="Topi Snapback Persija"
+            />
+          </div>
+          <div class="product-info">
+            <h3>Topi Snapback Persija</h3>
+            <p>Topi snapback dengan logo bordir premium</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 199.000</span>
+                <span class="original-price">Rp 249.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product-card" data-category="scarf">
+          <div class="product-image">
+            <img
+              src="scarf jakmania..jpg"
+              alt="Scarf The Jakmania"
+            />
+            <div class="product-badge">LIMITED</div>
+          </div>
+          <div class="product-info">
+            <h3>Scarf The Jakmania</h3>
+            <p>Scarf resmi dengan desain eksklusif The Jakmania</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 179.000</span>
+                <span class="original-price">Rp 229.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product-card" data-category="aksesoris">
+          <div class="product-image">
+            <img
+              src="gantungan kunci persija.jpg"
+              alt="Gantungan Kunci Persija"
+            />
+          </div>
+          <div class="product-info">
+            <h3>Gantungan Kunci Persija</h3>
+            <p>Gantungan kunci resmi dengan logo 3D</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 49.000</span>
+                <span class="original-price">Rp 69.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 7 -->
+        <div class="product-card" data-category="aksesoris">
+          <div class="product-image">
+            <img
+              src="tumblr persija.jpg"
+              alt="Tumbler Persija"
+            />
+          </div>
+          <div class="product-info">
+            <h3>Tumbler Persija</h3>
+            <p>Tumbler stainless steel dengan desain eksklusif</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 129.000</span>
+                <span class="original-price">Rp 159.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 8 -->
+        <div class="product-card" data-category="jersey">
+          <div class="product-image">
+            <img
+              src="jersey thrid 2024.jpg"
+              alt="Jersey Third Persija 2024"
+            />
+            <div class="product-badge">NEW</div>
+          </div>
+          <div class="product-info">
+            <h3>Jersey Third Persija 2024</h3>
+            <p>Jersey alternatif dengan desain spesial</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 429.000</span>
+                <span class="original-price">Rp 499.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 9 -->
+        <div class="product-card" data-category="jaket">
+          <div class="product-image">
+            <img
+              src="kaos jakmania persija.jpg"
+              alt="Jaket Training Persija"
+            />
+            <div class="product-badge">NEW</div>
+          </div>
+          <div class="product-info">
+            <h3>Kaos Persija</h3>
+            <p>Kaos Persija dengan bahan Cotton Combed 30s</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 150.000</span>
+                <span class="original-price">Rp 200.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+      <h2>Produk <span>Spesial</span> Untuk Jakmania</h2>
+      <div class="products-grid">
+        <!-- Featured Product 1 -->
+        <div class="product-card">
+          <div class="product-image">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE67ouiLyoksFEoN7oNV7Enxt_FStu0cD2RA&s"
+              alt="Jaket Bomber The Jakmania"
+            />
+            <div class="product-badge">LIMITED EDITION</div>
+          </div>
+          <div class="product-info">
+            <h3>Jaket Bomber The Jakmania</h3>
+            <p>Jaket bomber eksklusif hanya untuk anggota Jakmania</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 799.000</span>
+                <span class="original-price">Rp 999.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Product 2 -->
+        <div class="product-card">
+          <div class="product-image">
+            <img src="jersey persija 2024.jpg" alt="Jersey Retro Persija 1998" />
+            <div class="product-badge">RETRO</div>
+          </div>
+          <div class="product-info">
+            <h3>Jersey Retro Persija 1998</h3>
+            <p>Reproduksi jersey legendaris musim 1998</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 459.000</span>
+                <span class="original-price">Rp 599.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Product 3 -->
+        <div class="product-card">
+          <div class="product-image">
+            <img
+              src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhUSExMVFRUXFxUYFRUVFxcXFxcXFxcWFxUYFRcYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0mICUtLS0tLS0tLS0tLS0tLS0tLS0vLS0tLS0tLS0tLi0vLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAL0BCwMBIgACEQEDEQH/xAAcAAACAgMBAQAAAAAAAAAAAAAAAQIFAwQGBwj/xABAEAABAwIDBQUGAwYEBwAAAAABAAIRAyEEEjEFQVFhcQYTIoGRBzKhscHwUtHhFCNCYrLCM4KSsxVDU3KTosP/xAAaAQADAQEBAQAAAAAAAAAAAAAAAQIDBAUG/8QALxEAAgIBBAEBBQcFAAAAAAAAAAECEQMEEiExQVEFEyJhgRQzcZGhsdEyQsHw8f/aAAwDAQACEQMRAD8A8jCk9QAWQwuc92PKZCUQjMhqZCqxSgIQAgQyEIKSBghCEyWPckEICB+gwFc9ksNhH4ljcY806IlznCI8Piyum5Doy+G8kQFq7C2W/FV2YdhALybkgAAAlxJNhYHXkvQmdjHU2Ad3Wp2guoV6OUuvc1YzHUamLGANEJGeXJGKo8821h6LK9SnQealJriGPcWnOB/EMtoO77C0CF6e/sQ6qw+Gq7M4BlSvUojKIv8AvJzPNnGLjQW95ec4/COo1alJ/vMcWugyJaYkHeDrKGqHjmpKjWhMJuaRqIsDfgRI+BCQ+4SNEEqbtFicVkJskyoPsgmEF/RDSmTSsAB5pBOUoQH4EqgUQE5skUBKrskUsxRuRCAd+BkpQnuUUDY3BEoJTgpB+A4R5JlqlCDWMSBck5IJs4IM7vhiASlEqQamTy+hFJSyhMdUWPbZGEJlqAkOhBKFIhIhMloQQmEkC8HUezquxuNAflh9N7QXd3lBs+/etcwe4Rcb165gcXSFGu4OaWilV7k0zTLHOLcrg3umtYYLhZoHvGZK+fWVCCHNJBBkEWIIuCDuK7mn7TsWWgPcA4ABz202u7yBEvYS0ZiAJcCPJVFnPnxbnaPQtoYun3sd43unZXzUdShr3NBawms17M3idFpgQCIM+PdsazH42u5nu5g0RljwNawxkAbEtOgAVtjPaHiSx7aZAfUbkdWyNY8M0ysDSctrTJMeq41EnY8ENrtm1iWy5oAJJZRAAEkk02AAAalelbP9jGIfTY+piqVJ7gC6mWl5ZP8ACSHQSOS8sc4m5PAegAHwASk8T6pUaSc2qi6+h9G1sJSwtOlsrZ7Wd+5svrODXdzTNn4iod7yZDW7zG4LR7TdqMFsanSwlCg3EVAJeHOAIBuX1H5XEvcbx+i8BB5lTaU3Izhpk38Ts67tz7QKm0GMptoMw9NplzWEOL3bi52UWHDjfguOaU8qA0qW7N4Y9vCIlAU8iYalZfu2RFkyZTgJyEFqNKiACeVGZBcgXwhlRA5pSgFArRLyRKhyThA9zJZlIFYwmHoGp0LKOKdlGEEoIuiTiolM6JAIBt2CUphBTJCVIOUWpFA02ShJAcpWKQ6T6IIAWTIlkRYbGRKSyABDeAF+X6J2DhZjhSDCtqphnNbmdadBv/RYmjopczRYOeTFkTDQtju+iiaXL4lT7xGn2drpGIQEw4JtpyQ0AXWbEbPc24uPiqTTF7vJVxXCNdzlEvUnhQlNGU20+xglBQChBIuKCEOQAmSwH35p7klJIoimCgIQIEIQUDsCUiEJgJi7E77+/VJPd9/fFJAnySakmxEBIquEIlACeZIFMXANCCUaIcEC8AlCZCJQFBmTBKA5WuxMOINQ3izeupP3zSZthxPLNRTMWG2W50ZzlHDf+isqNFlMeEAcTEn5oc4ymGpHsYdPCHS59TT2owuAOsTZVjSr5wstarhGHdHQqWhZtO5S3xK8VEi8mwC3RgmX19eS2KVIN0EKVEiOnyy4b4MeDweW5Pi+SzvBkaLKaTw0OLTlOh3GNYWDvb3Kvg61GEY7Y8GKthGuF9TvVXiMK5mtxx/PgrfN6blKle25LdzRjk0cMy44fr/Jz8Jhb21cF3ZDh7p05HgtEBWeHkxyxz2y7Q0uCE0E9gQgBLKmUDBCJQEACUJlAQDAIzphQTE20uBtQChDkCsQUnKJUiga6aIlSUU9yBIHFM6KKk0oGhIBShMNQJWJdDs0RRYOMn1cVQK5Y+KbBpLRB56qZPg9D2clHI5P0/g3S2w8la7P7PV6gzluRkSHvFnTZoaBckk2VZRfmYD5eamSeJ9dFLtrg9O5P+l0bO1dligIdWpmoCAabcxcCRcG0W6qrc7kp1AFjbe/ohWu2axUkqbtgRorzsvsdtd81DFNpAJmBJ/E7QNG+4PBUj9yt+z20Wsmm4tZmIIe8eEccxDS4AgagiEmzLUuaxS2dnWbQ2PgqtFwptYw07Neyq6QTb3Kz4cCQJII0N5Xm9RkOIMSDB6jVdhWx9LDSW1KTzka1goVHOHha1ozOa5pbZt9ei42vUObMbl0k9Tcp5Nql8DtHneznmeLdl9fJjnVZ8K6602vWzQ4+nMrFf1HpYZp0b2No56bm74kdRcLlwV11MrlcUzLUe3gTHTcuhHF7UhTjP6EP0RCEFM8qglJNJMAITQhAAEAoQUgG1QcpSm4IBq0QTKaCmKhJgpevogoDoAETZAaVIgIBLgjCkEp4BGYpD4QQURzQ+90ggPIwArmpSmmyPwN06D1VIr9j2922DMNAMcQL9FMuj0PZ6jJyi/QwbFrEPLCbET5j9FZg20MQTMWgGDfqqPAO/ft5k/EFdbgarSHMAyu7p7STXewVM1RhDQ0AgxfwaHU3CIm2HI4xdc02voUdZ8mAUCwvdXG2Oztdr6xZh3hlJzw4sJqBmX3gagAkDiQFp7U2XUpPcwTUDe7lwaQJqMa9rd4m8RvhJpo6YZ4Pz2vBoVKl1jdUHFTr0HhxDmPaQLgtcCJIiQRZYq2HcGtc4QHZspO/KYdbdB4rJtieVLpom144hSruELWpMBO5Z6lIR+SE+C05Sg+ite/xwFuUqw8hwv6RvVVXd4uYst/B05/RaSSSR5WnyTnOUYnUYClTyEucLyAb+EgAAEdfWDyXL7ap5azrzIaZAIGkWnorjDtVf2gpQWO5EE/EfMpw4OrXaeSx75Sbp/T06KtCEFWeSCEfYQgAQEITAAgIQUgBTUFIlBUSKMySG6pkWMEymXKPmnEpDTfgR5pncolSA1TEhFEoCSBEhwQAOBQiUiwDEFiEH7+CBcGXA2qMN/eb812GCcxlRr6lN1VrTmyNdkJIuJdBhs620XG0XwW9R8101SuQYaSNQSCRbeLbkHo6JJwlE6J/aOmRVfUw5Feo3E5nNp0zm74OyuL3jO0NBy5WkAgSeCji+0tGq6kajKjG0nsczu/CXDumseX5Xg5w9jSHAzllsiyoauOqBp8btCNdx1HwCwja1aPf9Q09NRzUuRo9HFO6/V/wdFV2/Rc4kV3sIwzqWYMeJeajnNI8biA0GxJJ8R0Vbg9qtLcMKld47t9QuBzOvBNJ0lrmxfLMFwmw3qndtJ95yn/ACN49OS1GVFm5uyI6aHT4/L0a9F6l/2nr0qlSlUpvY8mkBULc8941zgS4vaC6QWjNvyqoqxlKKfFFTTRF+TtxY/d49vZRVqfizeq3MPi2jj6LFXNj5BY2BaVuXJ4kJSw5G4Fp/xkDRpnnAWjjMY+rEwANAPu6wvCiVRWbU5si2zfAyEJyghBhXoH2UJJoKAICAhAgSTJQgAKkQogJFyKHdBxQmAjKmTTAAJEpvSCAfHAApgJICATABEoeiEg+SJJJ7lGEDYAIKIUidEBXAgukdvPkubldMweEcyfmkz0vZy5df72YMRotdi2sUNy1SL3WU+zvknu5MLxc9B9VGPmplwJPl9UQszFq+ieHetkiRy4/kq/LDh5qyadFpA2wNvhlNj6cDkXLXW/tbRvU/JaC1j0eLqoqOZpfL9ibwoQpjRQBTMZVdjSCZQmIJTKjCSQbvUkhEoKACEIQEDGVHKUDikmiJNDhEckIQOhuFknJnRCQ5ChEJuVv2QptdjKAdcZ5g6SAS34gJkvgp7QhegYPa+ExjqmC2lFN7ajxRxjQAWeIjJV4t5m0awRmXL19hZXOAqhwBc0HLZ0EgEX0MT5odIeFTyt0uioakrinsbjU9B+qmNk0xvLvP8AIKN6OpaTK/BSELLSoOdoD9PVXjMGwGzR1KzFql5DaGhf9z/IrMPs4fxmeQ09Vu0X+INO6Y5yVMvWrjneGd4I+KSk2zpcVgVx/wCmWufF6x8FgcVio159CsgvZKZtHKsiuPk1nNEk9JWRgkWKi6zj5fW6lStb7H6KGYR4l+YoJ9Ny28I+W8xu0KxURBPkFmoCHEbiFceDoxpp2ae2B4W9foq82VhthsMb1+irsy2PK1v37v5fsSYorawWAq1f8KlUqf8AYxzv6QrfD9iNpVPdwdYA/jb3f+5CEckpJLlnPKS7XCeyrabveZSpcn1Wn/bzK4wvsYxBH73FUWH+Rr6n9WRVtZm88F5PL0BdT2+7IDZz6LO9NXvGuJdkyQWkCAJO4jeuWCGgjJS5Q0wkgpGg0O4KKlmSC0JxSRCmITElYpQEEJJFEhwSQgoGHqs2z8X3VWnVAksex8aTlcDHwWEITJfKLztrhAzFvc2CysBWYeLagkn/AFZitubN4WM8J4pGmcXs8Ft62DkEDV1BxsQP5Yjo3mszB4R0HyUZHVM6/ZyvdF+KMYHzUnO1WPMQY3BZSRCl2dqadpPoxhYHSYv1CyuqclFxAEhLoLjLp9GBxiw4lYdoCGO6hbBqECYWvjzNKeJH1TdmLcXCXPhv/BqYdpA04rYZVjW3VQHhDeYn5fmshEqJvkvS/d3FmEm5PNMFQDBrMT6KLKu4pVZO5xfJuNEiRa/lZd/7OOy+Fxrar64cXU3NgNflGVwOsCdQd687w1UCxXp3sZrRWxDPxU2O/wBDiP71pjS3cj1eR/ZZSg6arr8Ts6fYfZrNcMx1/wDmZn36PJC38Ns3B0f8OhQp7/BTptPObBbePw2fLOgdJ5gsewj/ANlTO2M0b+uVrQN86g3v6wuuj5mU5Tdzk2y9bXBEjxDWWkG3FKpVMff2VipvENAytBiBAAvcWB+5WOg927KXWgibbiL6bymZmfvTAkROuljoel1Kg8mQeXxCx1Ra+pkxOhaYM9YHoU8O7xG8GPS/6oE+jzL284aaOFq721KjD/naHf8AzXjwXvPtow2fZpd/061J3qXUz/WF4O0LKfZ26blCKYQE1J0oUIOqAkSgH0CnAUCpNKGOPYgE4SIRKAGg6JSpDekNOyJlHklCk1Mlcmxs7aFShUbVpOyvbv3EHUOG8HgrWntcPJOQMkzlboOOXly3Kh8lJk9OCTVmmKUoSbj54OjNVsCCpVXjcqajjtz4B/F+atKZta/S6l8HdiaybkvRE6lQEJMbZYpJOllJz7dFLqqNcbk25yXyXzCu06blq7QP7vz/ADWSpXdpC0sdX8IbxMlFeDHLkTuSuq8/siQfmyjg2Pp9FleyxSwVDU2OnyWauLQlJHTp8VYbZrPYDHJJ7QRJWRygVkipxQjRzEACem9dx7KHmntBouM9Oo2D0D/7FwzQWyQTFjEkC08Oq6vsXtE/t2DcYAa/JMkk94MlydV0R2qqZ5s/fTU4ygqp838uD3moJChkABHEAC+u76qbt/MH15LXFTSYngSddDeLH811Hz5VbdbivB3AzNINhuMumbjUFo8lOngahY1tSplIaJbaScxNzvOgVnTpi8tm8xmLt1h0sVJxAuIbEXgCx+aVFbn0Y6dh+IiIn+KGifrdKkIcPO/3yCx1K2UGBJvYa26qGD7wkF7Gtg2DZPWXQANUxeCt9o2FFTZmLbGlLP8A+Mip/avm9oX1RtXDCrQrUj/HSqM65mEfVfK1J1lnM69I+0SSCccElmdgihCcKiKsCkmUkgaGmoymgYJnRHJE2SKEED7slKe9Mmw+9E2lMtUAgd0yRCnQruYZafLd5qD1GUA3tdotqW1WkeMEHiLj81B2PZOp9FWBMBTtRstVkpI3quKZEzJ81oPeTPNIwmBZNJIzyZJZOx05boSOhWwzaFQaw7r+i10gmKE5wfwOjdG0AdWehT/bGfzDyWi1MgfJQ4RN1q81cv8AQ3u/p/ihbOyNpNp1KTy4eCox2/8AhcD9FUEBRhGxA9Xk9EfW9Ui0bz9CsPcjienxXz5ifaXtR4AGIFMAAeClT4RMuaT8VUYztXtCpd+MxB5Co5o9GkBdG5HjLTyPp00WNEm3MmBbz5qtxXaDZ9IxUxOGYeBqMzekyvl/EPc85nvc88XEuPqVFlNTvLWlbfLPovFe0rZVMx+0h/JlOo74hsH1VLi/bJgW2ZSxFTgcrGjyzOn4Lw99NACW8v7Kk+T1fEe2oz+7wXm+r9Gs+q8pm5MRJmOGtkkyk3ZtjxKHKEpG6imUjROhhCG3TASKXJEpQmmWosTif//Z"
+              alt="Paket Komplit The Jakmania"
+            />
+            <div class="product-badge">BUNDLING</div>
+          </div>
+          <div class="product-info">
+            <h3>Jersey The Jakmania</h3>
+            <p>Jersey + Masker dengan harga spesial</p>
+            <div class="product-price">
+              <div>
+                <span class="price">Rp 499.000</span>
+                <span class="original-price">Rp 799.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+      </div>
+
+      <!-- Member Gallery -->
+      <div id="memberGalleryPage" class="page">
+        <section class="section">
+          <div class="section-title">
+            <h2>Gallery <span class="orange-text">Jakmania</span></h2>
+            <p>Momen-momen terbaik bersama Jakmania</p>
+          </div>
+          <div class="gallery">
+            <div class="gallery-item">
+              <img src="jakarta vs semarang.jpg" alt="Gallery 1" />
+              <div class="gallery-caption">Persija vs PSIS Semarang</div>
+            </div>
+            <div class="gallery-item">
+              <img src="persija vs arema.jpg" alt="Gallery 2" />
+              <div class="gallery-caption">Persija vs Arema</div>
+            </div>
+            <div class="gallery-item">
+              <img src="persija vs bali.jpg" alt="Gallery 3" />
+              <div class="gallery-caption">Persija vs Bali United</div>
+            </div>
+            <div class="gallery-item">
+              <img src="persija vs bhayangkara.jpg" alt="Gallery 4" />
+              <div class="gallery-caption">Persija vs 
+                Bhayangkara Presisi Indonesia FC</div>
+            </div>
+            <div class="gallery-item">
+              <img src="persija vs persib.jpg
+              " alt="Gallery 5" />
+              <div class="gallery-caption">Persija vs Persib</div>
+            </div>
+            <div class="gallery-item">
+              <img src="persija vs psis.jpg" alt="Gallery 6" />
+              <div class="gallery-caption">Persija vs PSIS Semarang</div>
+            </div>
+            <div class="gallery-item">
+              <img src="persija vs psm.jpg" alt="Gallery 7" />
+              <div class="gallery-caption">Persija vs PSM Makassar</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Member Card -->
+      <div id="memberCardPage" class="page">
+        <section class="section">
+          <div class="section-title">
+            <h2>Kartu <span class="orange-text">Anggota</span></h2>
+            <p>Kartu anggota digital Anda</p>
+          </div>
+          <div class="kartu-container" id="memberKartuContainer"></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Modal Logout -->
+    <div id="logoutModal" class="modal" style="display: none">
+      <div class="modal-content">
+        <h3>Yakin ingin keluar?</h3>
+        <div class="modal-buttons">
+          <button class="modal-btn confirm" onclick="confirmLogout()">
+            Ya, Logout
+          </button>
+          <button class="modal-btn cancel" onclick="closeLogoutModal()">
+            Batal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2025 Kelompok 10 Sistem Informasi Keanggotaan Jakmania</p>
+    </footer>
+
+    <script>
+      // Data admin default
+      const adminData = {
+        username: "admin",
+        password: "admin",
+        role: "admin",
+        status: "active",
+      };
+
+      // Initialize the app
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("searchInput").addEventListener("input", loadMembers);
+document.getElementById("statusFilter").addEventListener("change", loadMembers);
+        // Pertama-tama, pastikan semua views disembunyikan
+        document.getElementById("publicPages").style.display = "block";
+        document.getElementById("adminPages").style.display = "none";
+        document.getElementById("memberPages").style.display = "none";
+        document.getElementById("loginModal").style.display = "none"; // Pastikan modal login disembunyikan
+
+        // Tampilkan halaman home publik sebagai default
+        showPage("home");
+        buildPublicMenu();
+
+        // Periksa apakah user sudah login
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        // Jika ada user yang login, tampilkan view yang sesuai
+        if (loggedInUser) {
+          if (loggedInUser.role === "admin") {
+            showAdminView();
+            buildAdminMenu();
+          } else {
+            showMemberView();
+            buildMemberMenu();
+          }
+        }
+
+        // Initialize animations
+        initAnimations();
+      });
+
+      function showPublicView() {
+        document.getElementById("publicPages").style.display = "block";
+        document.getElementById("adminPages").style.display = "none";
+        document.getElementById("memberPages").style.display = "none";
+        document.getElementById("loginModal").style.display = "none"; // Pastikan modal login tertutup
+        showPage("home");
+      }
+
+      // Show admin view
+      function showAdminView() {
+        document.getElementById("publicPages").style.display = "none";
+        document.getElementById("adminPages").style.display = "block";
+        document.getElementById("memberPages").style.display = "none";
+        showPage("adminHome");
+      }
+
+      // Show member view
+      function showMemberView() {
+        document.getElementById("publicPages").style.display = "none";
+        document.getElementById("adminPages").style.display = "none";
+        document.getElementById("memberPages").style.display = "block";
+        showPage("memberHome");
+      }
+
+      // Build public menu
+      function buildPublicMenu() {
+        const menu = document.getElementById("menuList");
+        menu.innerHTML = `
+            <li><a href="#" onclick="showPage('home')">Home</a></li>
+            <li><a href="#" onclick="showPage('registration')">Pendaftaran</a></li>
+            <li><a href="#" onclick="showLoginModal()">Login</a></li>
+          `;
+      }
+
+      // Build admin menu
+      function buildAdminMenu() {
+        const menu = document.getElementById("menuList");
+        menu.innerHTML = `
+            <li><a href="#" onclick="showPage('adminHome')">Home</a></li>
+            <li><a href="#" onclick="showPage('adminAnggota')">Anggota</a></li>
+            <li><a href="#" onclick="showPage('adminCetak')">Cetak Kartu</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+          `;
+      }
+
+      // Build member menu
+      function buildMemberMenu() {
+        const menu = document.getElementById("menuList");
+        menu.innerHTML = `
+            <li><a href="#" onclick="showPage('memberHome')">Home</a></li>
+            <li><a href="#" onclick="showPage('memberMerchandise')">Merchandise</a></li>
+            <li><a href="#" onclick="showPage('memberGallery')">Gallery</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+          `;
+      }
+
+      // Show page function
+      function showPage(pageName) {
+        // Hide all pages first
+        const allPages = document.querySelectorAll(".page");
+        allPages.forEach((page) => {
+          page.classList.remove("active");
+        });
+
+        // Show the selected page
+        switch (pageName) {
+          case "home":
+            document.getElementById("homePage").classList.add("active");
+            break;
+          case "registration":
+            document.getElementById("registrationPage").classList.add("active");
+            resetRegistrationForm();
+            break;
+          case "adminHome":
+            document.getElementById("adminHomePage").classList.add("active");
+            break;
+          case "adminAnggota":
+            document.getElementById("adminAnggotaPage").classList.add("active");
+            loadMembers();
+            break;
+          case "adminCetak":
+            document.getElementById("adminCetakPage").classList.add("active");
+            renderKartu();
+            break;
+          case "memberHome":
+            document.getElementById("memberHomePage").classList.add("active");
+            break;
+          case "memberMerchandise":
+            document
+              .getElementById("memberMerchandisePage")
+              .classList.add("active");
+            break;
+          case "memberGallery":
+            document
+              .getElementById("memberGalleryPage")
+              .classList.add("active");
+            break;
+          case "memberCard":
+            document.getElementById("memberCardPage").classList.add("active");
+            renderMemberCard();
+            break;
+        }
+      }
+
+      function resetRegistrationForm() {
+        document.getElementById("registrationForm").reset();
+        document.getElementById("photoPreview").style.display = "none";
+        document.getElementById("photoPreview").src = "";
+      }
+
+      // Show login modal
+      function showLoginModal() {
+        document.getElementById("loginModal").style.display = "flex";
+      }
+
+      // Di menu public, pastikan hanya memanggil fungsi ini saat diklik
+      function buildPublicMenu() {
+        const menu = document.getElementById("menuList");
+        menu.innerHTML = `
+          <li><a href="#" onclick="showPage('home')">Home</a></li>
+          <li><a href="#" onclick="showPage('registration')">Pendaftaran</a></li>
+          <li><a href="#" onclick="showLoginModal()">Login</a></li>
+      `;
+      }
+
+      // Close login modal
+      function closeLoginModal() {
+        document.getElementById("loginModal").style.display = "none";
+        resetLoginForm();
+      }
+
+      function resetLoginForm() {
+        document.getElementById("loginForm").reset();
+      }
+
+      // Fungsi untuk logout
+      function logout() {
+        document.getElementById("logoutModal").style.display = "flex";
+      }
+
+      function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+      }
+
+      function confirmLogout() {
+        localStorage.removeItem("loggedInUser");
+        closeLogoutModal();
+        showNotification("Berhasil logout!", true);
+        showPublicView();
+        buildPublicMenu();
+      }
+
+      // Fungsi untuk menampilkan notifikasi
+      function showNotification(message, isError = true) {
+        const notification = document.getElementById("notification");
+        notification.innerHTML = message.replace(/\n/g, "<br>");
+        notification.style.display = "block";
+        notification.style.background = isError ? "#ff3333" : "#2ecc71";
+
+        setTimeout(() => {
+          notification.style.display = "none";
+        }, 3000);
+      }
+
+      // Generate member number
+      function generateMemberNumber() {
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, "0");
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const year = today.getFullYear();
+
+        // Generate random 6-digit number
+        const randomNum = Math.floor(100000 + Math.random() * 900000);
+        const part1 = randomNum.toString().substring(0, 3);
+        const part2 = randomNum.toString().substring(3, 6);
+
+        return `JP.IV.${part1}.${part2}.${day}.${month}.${year}`;
+      }
+
+      // Preview photo when selected
+      document.getElementById("photo").addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            const preview = document.getElementById("photoPreview");
+            preview.src = event.target.result;
+            preview.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Form submission
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Get form values
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+          const nik = document.getElementById("nik").value;
+          const photoInput = document.getElementById("photo");
+
+          // Get existing members
+          const members =
+            JSON.parse(localStorage.getItem("jakmaniaMembers")) || [];
+
+          // Validate password match
+          if (password !== confirmPassword) {
+            showNotification("Password dan Konfirmasi Password tidak sama!");
+            return;
+          }
+
+          // Validate NIK
+          if (!/^\d{16}$/.test(nik)) {
+            showNotification("NIK harus terdiri dari 16 digit angka!");
+            return;
+          }
+
+          // Validate photo
+          if (photoInput.files.length === 0) {
+            showNotification("Silakan upload foto!");
+            return;
+          }
+
+          // Check username availability
+          if (!isUsernameAvailable(username, members)) {
+            showNotification(
+              "Username sudah digunakan, silakan pilih username lain!"
+            );
+            return;
+          }
+
+          // Generate member number
+          const memberNumber = generateMemberNumber();
+
+          // Get form data
+          const formData = {
+            memberNumber: memberNumber,
+            fullName: document.getElementById("fullName").value,
+            nik: nik,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            gender: document.querySelector('input[name="gender"]:checked')
+              .value,
+            address: document.getElementById("address").value,
+            birthDate: document.getElementById("birthDate").value,
+            photo: document.getElementById("photoPreview").src,
+            username: username,
+            password: password,
+            status: "Aktif",
+            registrationDate: new Date().toISOString(),
+          };
+
+          // Save to localStorage
+          members.push(formData);
+          localStorage.setItem("jakmaniaMembers", JSON.stringify(members));
+
+          showNotification(
+            `Pendaftaran berhasil! Nomor anggota Anda: ${memberNumber}<br>
+              Silakan login dengan username: ${username} dan password yang telah dibuat.`,
+            false
+          );
+
+          // Redirect setelah 3 detik
+          setTimeout(() => {
+            showPublicView();
+          }, 2000);
+        });
+
+      // Fungsi untuk mengecek ketersediaan username
+      function isUsernameAvailable(username, members) {
+        return !members.some((member) => member.username === username);
+      }
+
+      // Handle form login
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const username = document
+            .getElementById("loginUsername")
+            .value.trim();
+          const password = document
+            .getElementById("loginPassword")
+            .value.trim();
+          const members =
+            JSON.parse(localStorage.getItem("jakmaniaMembers")) || [];
+          const adminData = JSON.parse(
+            localStorage.getItem("adminCredentials")
+          ) || {
+            username: "admin",
+            password: "admin",
+          };
+
+          // Cek login admin
+          if (
+            username === adminData.username &&
+            password === adminData.password
+          ) {
+            localStorage.setItem(
+              "loggedInUser",
+              JSON.stringify({
+                username: adminData.username,
+                role: "admin",
+                status: "active",
+              })
+            );
+            showAdminView();
+            buildAdminMenu();
+            closeLoginModal();
+            return;
+          }
+
+          // Cek login member
+          const member = members.find(
+            (m) => m.username === username && m.password === password
+          );
+
+          if (member) {
+            if (member.status === "Aktif") {
+              localStorage.setItem(
+                "loggedInUser",
+                JSON.stringify({
+                  username: member.username,
+                  role: "member",
+                  status: "active",
+                })
+              );
+              showMemberView();
+              buildMemberMenu();
+              closeLoginModal();
+            } else {
+              showNotification("Akun Anda belum aktif. Silakan hubungi admin.");
+            }
+          } else {
+            showNotification("Username atau Password salah!");
+          }
+        });
+
+      // Fungsi untuk memuat data anggota dari localStorage
+      function loadMembers() {
+        try {
+          const membersData = localStorage.getItem("jakmaniaMembers");
+          const members = membersData ? JSON.parse(membersData) : [];
+          const tbody = document.getElementById("membersTableBody");
+          tbody.innerHTML = "";
+
+          const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+        const statusFilter = document.getElementById("statusFilter").value;
+          
+        // Filter data berdasarkan pencarian dan status
+        const filteredMembers = members.filter(member => {
+          const matchesSearch = 
+                (member.memberNumber && member.memberNumber.toLowerCase().includes(searchTerm)) ||
+                (member.fullName && member.fullName.toLowerCase().includes(searchTerm)) ||
+                (member.nik && member.nik.toLowerCase().includes(searchTerm)) ||
+                (member.username && member.username.toLowerCase().includes(searchTerm));
+
+  const matchesStatus =
+              statusFilter === "Semua" ||
+              (statusFilter === "Aktif" &&
+                (!member.status || member.status === "Aktif")) ||
+              (statusFilter === "Nonaktif" && member.status === "Nonaktif");
+
+            return matchesSearch && matchesStatus;
+          });
+
+          if (filteredMembers.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="12" style="text-align: center;">Tidak ada data anggota yang ditemukan</td></tr>`;
+            return;
+          }
+
+          filteredMembers.forEach((member, index) => {
+            const row = document.createElement("tr");
+
+            // Format tanggal lahir untuk ditampilkan
+            const birthDate = member.birthDate
+              ? new Date(member.birthDate).toLocaleDateString("id-ID", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })
+              : "-";
+
+                       // Default status to "Aktif" if not set
+                       const status = member.status || "Aktif";
+            const statusClass =
+              status === "Aktif" ? "status-active" : "status-inactive";
+
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${member.memberNumber || "-"}</td>
+                <td>${member.fullName || "-"}</td>
+                <td>${member.nik || "-"}</td>
+                <td>${member.gender || "-"}</td>
+                <td>${birthDate}</td>
+                <td>${
+                  member.address
+                    ? member.address.substring(0, 30) +
+                      (member.address.length > 30 ? "..." : "")
+                    : "-"
+                }</td>
+                <td>${member.phone || "-"}</td>
+                <td>${member.email || "-"}</td>
+                <td>${member.username || "-"}</td>
+                <td class="${statusClass}">${status}</td>
+                <td>
+      <div class="action-buttons">
+            <button class="action-btn status-btn ${
+              member.status === "Nonaktif" ? "inactive" : ""
+            }"
+                    onclick="toggleStatus(${index})">
+              <i class="fas ${
+                member.status === "Aktif" ? "fa-toggle-off" : "fa-toggle-on"
+              }"></i>
+              ${member.status === "Aktif" ? "Nonaktif" : "Aktif"}
+            </button>
+            <button class="action-btn edit-btn" onclick="editMember(${index})">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="action-btn delete-btn" onclick="confirmDelete(${index})">
+              <i class="fas fa-trash"></i> Hapus
+            </button>
+          </div>
+        </td>         `;
+
+            tbody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Error loading members:", error);
+          showNotification("Gagal memuat data anggota");
+        }
+      }
+
+            // Fungsi untuk mengubah status anggota (Aktif/Nonaktif)
+            function toggleStatus(index) {
+        const members =
+          JSON.parse(localStorage.getItem("jakmaniaMembers")) || [];
+        const member = members[index];
+
+        if (!member) {
+          showNotification("Anggota tidak ditemukan");
+          return;
+        }
+
+        const newStatus = member.status === "Aktif" ? "Nonaktif" : "Aktif";
+
+        member.status = newStatus;
+        localStorage.setItem("jakmaniaMembers", JSON.stringify(members));
+
+        // Notifikasi dengan warna berbeda berdasarkan status baru
+        const notificationMessage = `Status anggota ${member.fullName} berhasil diubah menjadi ${newStatus}`;
+
+        if (newStatus === "Nonaktif") {
+          showNotification(notificationMessage, true, "#dc3545"); // Hijau untuk aktif
+        } else {
+          showNotification(notificationMessage, false, "#28a745"); // Merah untuk nonaktif
+        }
+
+        loadMembers();
+      }
+
+
+      // Fungsi untuk menghapus anggota
+      function confirmDelete(index) {
+        if (confirm("Apakah Anda yakin ingin menghapus anggota ini?")) {
+          try {
+            const membersData = localStorage.getItem("jakmaniaMembers");
+            const members = membersData ? JSON.parse(membersData) : [];
+
+            if (index >= 0 && index < members.length) {
+              const deletedMember = members.splice(index, 1)[0];
+              localStorage.setItem("jakmaniaMembers", JSON.stringify(members));
+              showNotification(
+                `Anggota ${deletedMember.fullName} berhasil dihapus`,
+                true
+              );
+              loadMembers();
+            } else {
+              showNotification("Indeks anggota tidak valid");
+            }
+          } catch (error) {
+            console.error("Error deleting member:", error);
+            showNotification("Gagal menghapus anggota");
+          }
+        }
+      }
+
+      function editMember(index) {
+        const members =
+          JSON.parse(localStorage.getItem("jakmaniaMembers")) || [];
+        const member = members[index];
+
+        if (!member) {
+          showNotification("Data anggota tidak ditemukan");
+          return;
+        }
+
+        // Tampilkan modal/form edit
+        showEditModal(member, index);
+      }
+
+      function showEditModal(member, index) {
+        // Isi form edit dengan data member
+        document.getElementById("editFullName").value = member.fullName || "";
+        document.getElementById("editEmail").value = member.email || "";
+        document.getElementById("editPhone").value = member.phone || "";
+        document.getElementById("editAddress").value = member.address || "";
+
+        // Set jenis kelamin
+        if (member.gender === "Laki-laki") {
+          document.getElementById("editMale").checked = true;
+        } else {
+          document.getElementById("editFemale").checked = true;
+        }
+
+        // Simpan index anggota yang sedang diedit
+        document.getElementById("editMemberForm").dataset.index = index;
+
+        // Tampilkan modal
+        document.getElementById("editModal").style.display = "flex";
+      }
+
+      function saveEditMember(e) {
+        e.preventDefault();
+        const index = document.getElementById("editMemberForm").dataset.index;
+        const members =
+          JSON.parse(localStorage.getItem("jakmaniaMembers")) || [];
+
+        if (index === undefined || !members[index]) {
+          showNotification("Gagal menyimpan perubahan");
+          return;
+        }
+
+        // Update data anggota
+        members[index].fullName = document.getElementById("editFullName").value;
+        members[index].email = document.getElementById("editEmail").value;
+        members[index].phone = document.getElementById("editPhone").value;
+        members[index].address = document.getElementById("editAddress").value;
+        members[index].gender = document.querySelector(
+          'input[name="editGender"]:checked'
+        ).value;
+
+        // Simpan ke localStorage
+        localStorage.setItem("jakmaniaMembers", JSON.stringify(members));
+
+        // Tutup modal dan refresh data
+        document.getElementById("editModal").style.display = "none";
+        showNotification("Data anggota berhasil diperbarui", true);
+        loadMembers();
+      }
+
+      // Render kartu anggota
+      function renderKartu() {
+    const members = JSON.parse(localStorage.getItem("jakmaniaMembers")) || [];
+    const container = document.getElementById("kartuContainer");
+    container.innerHTML = "";
+
+    if (members.length === 0) {
+        container.innerHTML = "<p>Tidak ada data anggota yang tersedia</p>";
+        return;
+    }
+
+    members.forEach((member) => {
+        // Format tanggal lahir
+        const birthDate = member.birthDate ? 
+            new Date(member.birthDate).toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }) : "-";
+
+        // Format tanggal kadaluarsa (2 tahun dari registrasi)
+        const expiryDate = member.registrationDate ? 
+            new Date(new Date(member.registrationDate).setFullYear(
+                new Date(member.registrationDate).getFullYear() + 2
+            )).toISOString().split('T')[0] : "-";
+
+        const card = document.createElement("div");
+        card.className = "kartu-anggota";
+        card.innerHTML = `
+            <img src="Logo_Persija.png" alt="Logo Persija" class="kartu-logo" />
+            <div class="kartu-judul">
+                <h2>KARTU ANGGOTA</h2>
+                <h3>The Jakmania</h3>
+            </div>
+            <div class="kartu-foto">
+                <img src="${member.photo}" alt="Foto" style="width: 100%; height: 100%" />
+            </div>
+            <div class="kartu-data">
+                <p><strong>No. Anggota:</strong> ${member.memberNumber || "-"}</p>
+                <p><strong>Nama:</strong> ${member.fullName || "-"}</p>
+                <p><strong>Tanggal Lahir:</strong> ${birthDate}</p>
+                <p><strong>Jenis Kelamin:</strong> ${member.gender || "-"}</p>
+                <p style="max-width: 300px; word-wrap: break-word;"><strong>Alamat:</strong> ${member.address || "-"}</p>
+                
+                <p style="text-align: right; margin-right:10px; margin-top:30px">
+  <strong>Berlaku s/d:</strong> ${expiryDate}
+<p>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+      // Render member's own card
+      function renderMemberCard() {
+        const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!loggedInUser) return;
+
+        const members =
+          JSON.parse(localStorage.getItem("jakmaniaMembers")) || [];
+        const member = members.find(
+          (m) => m.username === loggedInUser.username
+        );
+        if (!member) return;
+
+        const container = document.getElementById("memberKartuContainer");
+        container.innerHTML = "";
+
+        // Format tanggal lahir
+    const birthDate = member.birthDate ? 
+      new Date(member.birthDate).toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "2-digit", 
+        year: "numeric"
+      }) : "-";
+
+        const card = document.createElement("div");
+        card.className = "kartu-anggota";
+        card.innerHTML = `
+            <img src="Logo_Persija.png" alt="Logo Persija" class="kartu-logo" />
+            <div class="kartu-judul">
+              <h2>KARTU ANGGOTA</h2>
+              <h3>The Jakmania</h3>
+            </div>
+            <div class="kartu-foto">
+              <img src="${
+                member.photo
+              }" alt="Foto" style="width: 100%; height: 100%" />
+            </div>
+            <div class="kartu-data">
+  <p><strong>No. Anggota:</strong> ${member.memberNumber}</p>
+        <p><strong>Nama:</strong> ${member.fullName}</p>
+        <p><strong>Tanggal Lahir:</strong> ${birthDate}</p>
+        <p><strong>Jenis Kelamin:</strong> ${member.gender || "-"}</p>
+        <p><strong>Alamat:</strong> ${member.address.substring(0, 30)}...</p>
+                      <p style="text-align: right">
+                <strong>Berlaku s/d:</strong> ${
+                  new Date(member.registrationDate).getFullYear() + 2
+                }-${String(
+          new Date(member.registrationDate).getMonth() + 1
+        ).padStart(2, "0")}-${String(
+          new Date(member.registrationDate).getDate()
+        ).padStart(2, "0")}
+              </p>
+            </div>
+          `;
+        container.appendChild(card);
+      }
+
+// Intersection Observer for animations
+const animateOnScroll = (elements, className) => {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add(className);
+                }
+              });
+            },
+            { threshold: 0.1 }
+          );
+
+          elements.forEach((element) => {
+            observer.observe(element);
+          });
+        };
+
+        // Initialize animations
+        //Animate layanan
+        const layananItems = document.querySelectorAll(".features-grid");
+        animateOnScroll(layananItems, "animate");
+
+        // Animate timeline items
+        const timelineItems = document.querySelectorAll(".timeline-item");
+        animateOnScroll(timelineItems, "animate");
+
+        // Animate gallery items
+        const galleryItems = document.querySelectorAll(".gallery-item");
+        animateOnScroll(galleryItems, "animate");
+
+        // Animate trophies
+        const trophies = document.querySelectorAll(".trophy");
+        animateOnScroll(trophies, "animate");
+
+        // Animate fact cards
+        const factCards = document.querySelectorAll(".fact-card");
+        animateOnScroll(factCards, "animate");
+
+        // Animate legend cards
+        const legendCards = document.querySelectorAll(".legend-card");
+        animateOnScroll(legendCards, "animate");
+
+        // Animate manager items
+        const managerItems = document.querySelectorAll(".manager-item");
+        animateOnScroll(managerItems, "animate");
+
+        // Animate Jakmania section
+        const jakmaniaText = document.querySelector(".jakmania-text");
+        const jakmaniaImage = document.querySelector(".jakmania-image");
+
+        const jakmaniaObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                jakmaniaText.classList.add("animate");
+                jakmaniaImage.classList.add("animate");
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        jakmaniaObserver.observe(document.querySelector(".jakmania-section"));
+
+        // Add pulse animation to hero button
+        const heroButton = document.querySelector(".hero a");
+        setInterval(() => {
+          heroButton.style.animation = "pulse 2s infinite";
+        }, 5000);
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute("href");
+            if (targetId === "#") return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+
+        // Highlight active navigation based on scroll position
+        window.addEventListener("scroll", () => {
+          const scrollPosition = window.scrollY + 100;
+
+          document.querySelectorAll("section[id]").forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute("id");
+
+            if (
+              scrollPosition >= sectionTop &&
+              scrollPosition < sectionTop + sectionHeight
+            ) {
+              document.querySelectorAll("nav ul li a").forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === `#${sectionId}`) {
+                  link.classList.add("active");
+                }
+              });
+            }
+          });
+        });
+      
+        // Product filtering
+const categoryBtns = document.querySelectorAll(".category-btn");
+const productCards = document.querySelectorAll(".product-card");
+
+categoryBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    // Remove active class from all buttons
+    categoryBtns.forEach((b) => b.classList.remove("active"));
+    // Add active class to clicked button
+    btn.classList.add("active");
+
+    const category = btn.getAttribute("data-category");
+
+    // Show/hide products based on category
+    productCards.forEach((card) => {
+      if (
+        category === "all" ||
+        card.getAttribute("data-category") === category
+      ) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+});
+
+// Add to cart functionality
+const addToCartBtns = document.querySelectorAll(".add-to-cart");
+addToCartBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const productName = btn
+      .closest(".product-card")
+      .querySelector("h3").textContent;
+    alert(`${productName} telah ditambahkan ke keranjang!`);
+  });
+});
+
+// Initialize animations for product cards
+const animateProductCards = () => {
+  const productCards = document.querySelectorAll(".product-card");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate");
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  productCards.forEach((card) => {
+    observer.observe(card);
+  });
+};
+
+// Panggil fungsi ini saat halaman member merchandise dimuat
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.getElementById("memberMerchandisePage")) {
+    animateProductCards();
+  }
+});
+    </script>
+  </body>
+</html>
